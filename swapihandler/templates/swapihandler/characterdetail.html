@@ -1,0 +1,109 @@
+<style>
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+th, td {
+  padding: 15px;
+}
+table tr:nth-child(even) {
+  background-color: #eee;
+}
+table tr:nth-child(odd) {
+ background-color: #fff;
+}
+table th {
+  background-color: black;
+  color: white;
+}
+
+</style>
+
+
+
+
+{% if datos %}
+ <h1>WELCOME</h1>
+ <form action="/searchview/" method="get">
+     <input type="text" name="q">
+     <input type="submit" value="Buscar">
+ </form>
+ <table style="width:100%">
+
+
+   <tr>
+     <td>Nombre</td>
+     <td>{{datos.name}}</td>
+   </tr>
+   <tr>
+     <td>Altura</td>
+     <td>{{datos.height}}</td>
+   </tr>
+   <tr>
+     <td>Masa</td>
+     <td>{{datos.mass}}</td>
+   </tr>
+   <tr>
+     <td>Pelo</td>
+     <td>{{datos.hair_color}}</td>
+   </tr>
+   <tr>
+     <td>Skin</td>
+     <td>{{datos.skin_color}}</td>
+   </tr>
+   <tr>
+     <td>Ojos</td>
+     <td>{{datos.eye_color}}</td>
+   </tr>
+   <tr>
+     <td>Nacimiento</td>
+     <td>{{datos.birth_year}}</td>
+   </tr>
+   <tr>
+     <td>Genero</td>
+     <td>{{datos.gender}}</td>
+   </tr>
+   <tr>
+     {%for nombre, id in planets.items%}
+     <td>Homeworld</td>
+     <td><a href = "/planetdetail/{{id}}">{{nombre}}</td>
+     {%endfor%}
+   </tr>
+
+ </table>
+
+<div>
+{%if movies.items%}
+<table style="float: left">
+  <rt>
+    <th>Peliculas</th>
+  </tr>
+
+  {%for film, id in movies.items%}
+  <tr>
+    <td><a href = "/moviedetail/{{id}}">{{film}}</a></td>
+  </tr>
+  {%endfor%}
+
+</table>
+{%endif%}
+
+{%if starships.items%}
+<table style="float: left">
+  <rt>
+    <th>Naves</th>
+  </tr>
+
+  {%for starship, id in starships.items%}
+  <tr>
+    <td><a href = "/starshipdetail/{{id}}">{{starship}}</a></td>
+  </tr>
+  {%endfor%}
+
+</table>
+{%endif%}
+
+</div>
+
+
+ {%endif%}

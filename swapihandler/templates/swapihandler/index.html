@@ -1,0 +1,59 @@
+<style>
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+th, td {
+  padding: 15px;
+}
+table tr:nth-child(even) {
+  background-color: #eee;
+}
+table tr:nth-child(odd) {
+ background-color: #fff;
+}
+table th {
+  background-color: black;
+  color: white;
+}
+</style>
+
+
+{% if datos %}
+
+
+
+   <h1>WELCOME</h1>
+
+   <form action="/searchview/" method="get">
+       <input type="text" name="q">
+       <input type="submit" value="Buscar">
+   </form>
+
+<table style="width:100%">
+  <rt>
+    <th>Titulo</th>
+    <th>Episodio</th>
+    <th>Fecha de estreno</th>
+    <th>Director</th>
+    <th>Productor/es</th>
+  </tr>
+
+  {% for movie in datos.results %}
+    <tr>
+      <td><a href = "/moviedetail/{{movie.id}}">{{movie.title}}</a></td>
+      <td>{{movie.episode_id}}</td>
+      <td>{{movie.release_date}}</td>
+      <td>{{movie.director}}</td>
+      <td>{{movie.producer}}</td>
+    </tr>
+  {% endfor %}
+</table>
+
+
+
+
+
+{% else %}
+    <p>No polls are available.</p>
+{% endif %}

@@ -1,0 +1,107 @@
+<style>
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+th, td {
+  padding: 15px;
+}
+table tr:nth-child(even) {
+  background-color: #eee;
+}
+table tr:nth-child(odd) {
+ background-color: #fff;
+}
+table th {
+  background-color: black;
+  color: white;
+}
+
+</style>
+
+
+
+
+<h1>WELCOME</h1>
+<form action="/searchview/" method="get">
+    <input type="text" name="q">
+    <input type="submit" value="Buscar">
+</form>
+{% if message %}
+
+{% if characters %}
+<table style="float: left">
+<rt>
+  <th>Personajes</th>
+</tr>
+{%for personaje in characters%}
+
+<tr>
+  <td><a href = "/characterdetail/{{personaje.id}}">{{personaje.name}}</a></td>
+</tr>
+{%endfor%}
+</table>
+{% endif %}
+
+
+
+
+{% if starships %}
+<table style="float: left">
+<rt>
+  <th>Naves</th>
+</tr>
+{%for starship in starships%}
+
+<tr>
+  <td><a href = "/starshipdetail/{{starship.id}}">{{starship.name}}</a></td>
+</tr>
+{%endfor%}
+</table>
+{% endif %}
+
+
+{% if planets %}
+<table style="float: left">
+<rt>
+  <th>Planetas</th>
+</tr>
+{%for planet in planets%}
+
+<tr>
+  <td><a href = "/planetdetail/{{planet.id}}">{{planet.name}}</a></td>
+</tr>
+{%endfor%}
+</table>
+{% endif %}
+
+
+
+{% if films %}
+<table style="float: left">
+<rt>
+  <th>Peliculas</th>
+</tr>
+{%for pelicula in films%}
+
+<tr>
+  <td><a href = "/moviedetail/{{pelicula.id}}">{{pelicula.title}}</a></td>
+</tr>
+{%endfor%}
+</table>
+{% endif %}
+
+{%if not films and not planets and not starships and not characters%}
+
+<p>No se encontraron resultados para la busqueda: {{message}}</p>
+
+{%endif%}
+
+
+
+
+
+
+
+
+{%endif%}

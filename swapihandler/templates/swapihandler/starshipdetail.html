@@ -1,0 +1,121 @@
+<style>
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+th, td {
+  padding: 15px;
+}
+table tr:nth-child(even) {
+  background-color: #eee;
+}
+table tr:nth-child(odd) {
+ background-color: #fff;
+}
+table th {
+  background-color: black;
+  color: white;
+}
+
+</style>
+
+
+
+{% if datos %}
+ <h1>WELCOME</h1>
+ <form action="/searchview/" method="get">
+     <input type="text" name="q">
+     <input type="submit" value="Buscar">
+ </form>
+
+ <table style="width:100%">
+   <tr>
+     <td>Nombre</td>
+     <td>{{datos.name}}</td>
+   </tr>
+   <tr>
+     <td>Modelo</td>
+     <td>{{datos.model}}</td>
+   </tr>
+   <tr>
+     <td>Fabricante</td>
+     <td>{{datos.manufacturer}}</td>
+   </tr>
+   <tr>
+     <td>Costo (En creditos)</td>
+     <td>{{datos.cost_in_credits}}</td>
+   </tr>
+   <tr>
+     <td>Envergadura</td>
+     <td>{{datos.length}}</td>
+   </tr>
+   <tr>
+     <td>Max Max atmosphering speed</td>
+     <td>{{datos.max_atmosphering_speed}}</td>
+   </tr>
+   <tr>
+     <td>Tripulacion</td>
+     <td>{{datos.crew}}</td>
+   </tr>
+   <tr>
+     <td>Pasajeros</td>
+     <td>{{datos.passengers}}</td>
+   </tr>
+   <tr>
+     <td>Capacidad de carga</td>
+     <td>{{datos.cargo_capacity}}</td>
+   </tr>
+   <tr>
+     <td>Consumibles</td>
+     <td>{{datos.consumables}}</td>
+   </tr>
+   <tr>
+     <td>Hyperdrive Rating</td>
+     <td>{{datos.hyperdrive_rating}}</td>
+   </tr>
+   <tr>
+     <td>MGLT</td>
+     <td>{{datos.MGLT}}</td>
+   </tr>
+   <tr>
+     <td>Clase</td>
+     <td>{{datos.starship_class}}</td>
+   </tr>
+ </table>
+
+
+ <div>
+   {%if pilots.items%}
+ <table style="float: left">
+   <rt>
+     <th>Pilotos</th>
+   </tr>
+
+   {%for name, id in pilots.items%}
+   <tr>
+     <td><a href = "/characterdetail/{{id}}">{{name}}</a></td>
+   </tr>
+   {%endfor%}
+ </table>
+ {%endif%}
+
+ <table style="float: left">
+   <rt>
+     <th>Peliculas</th>
+   </tr>
+
+   {%for name, id in films.items%}
+   <tr>
+     <td><a href = "/moviedetail/{{id}}">{{name}}</a></td>
+   </tr>
+   {%endfor%}
+ </table>
+
+
+
+
+ </div>
+
+
+
+ {% endif %}

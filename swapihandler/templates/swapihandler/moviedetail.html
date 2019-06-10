@@ -1,0 +1,116 @@
+<style>
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+th, td {
+  padding: 15px;
+}
+table tr:nth-child(even) {
+  background-color: #eee;
+}
+table tr:nth-child(odd) {
+ background-color: #fff;
+}
+table th {
+  background-color: black;
+  color: white;
+}
+
+
+table#t01 td {
+  background-color: black;
+  color: black;
+}
+
+
+</style>
+
+
+
+{% if movie %}
+   <h1>WELCOME</h1>
+   <form action="/searchview/" method="get">
+       <input type="text" name="q">
+       <input type="submit" value="Buscar">
+   </form>
+
+   <table style="width:100%">
+     <rt>
+       <th>Titulo</th>
+       <th>Episodio</th>
+       <th>Fecha de estreno</th>
+       <th>Director</th>
+       <th>Productor/es</th>
+     </tr>
+
+       <tr>
+         <td>{{movie.title}}</td>
+         <td>{{movie.episode_id}}</td>
+         <td>{{movie.release_date}}</td>
+         <td>{{movie.director}}</td>
+         <td>{{movie.producer}}</td>
+       </tr>
+
+   </table>
+
+
+   <table id="t01">
+   <rt>
+     <th></th>
+    </tr>
+       <tr>
+         <td><font color="#EBD71C" size="8">{{movie.opening_crawl}}</font></td>
+       </tr>
+
+   </table>
+
+<div>
+
+
+
+   <table style="float: left">
+   <rt>
+     <th>Personajes</th>
+   </tr>
+   {%for name, id in characters.items%}
+   <tr>
+     <td><a href = "/characterdetail/{{id}}">{{name}}</a></td>
+   </tr>
+   {%endfor%}
+
+   </table>
+
+
+   <table style="float: left">
+   <rt>
+     <th>Naves</th>
+   </tr>
+   {%for nave, id in starships.items%}
+   <tr>
+     <td><a href = "/starshipdetail/{{id}}">{{nave}}</a></td>
+   </tr>
+   {%endfor%}
+
+   </table>
+
+
+   <table style="float: left">
+   <rt>
+     <th>Planetas</th>
+   </tr>
+   {%for planeta, id in planets.items%}
+   <tr>
+     <td><a href = "/planetdetail/{{id}}">{{planeta}}</a></td>
+   </tr>
+   {%endfor%}
+
+   </table>
+</div>
+
+
+
+
+
+
+{% endif %}
