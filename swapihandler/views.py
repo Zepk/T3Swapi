@@ -5,21 +5,36 @@ import requests
 import json
 
 
+def run_query(query):
+    request = requests.post('https://swapi-graphql-integracion-t3.herokuapp.com/', json={'query': query})
+    if request.status_code == 200:
+        return request.json()
+    else:
+        raise Exception("Query failed to run by returning code of {}. {}".format(request.status_code, query))
+
+
 def index(request):
-    r = requests.get('https://swapi.co/api/films')
-    datos = r.json()
+    query = """
+                {
+                  allFilms {
+                    edges {
+                      node {
+                        episodeID
+                        title
+                        director
+                        producers
+                        releaseDate
+                      }
+                    }
+                  }
+                }
+            """
+
+    result = run_query(query)
     template = loader.get_template('swapihandler/index.html')
-    id = 0
-    for i in datos['results']:
-        id += 1
-        req = requests.get('https://swapi.co/api/films/{}'.format(id))
-        req = req.json()
-        for j in datos['results']:
-            if j["episode_id"] == req["episode_id"]:
-                j.update({'id':id})
 
     context = {
-        'datos': datos,
+        'datos': result['data']['allFilms']['edges'],
     }
     return HttpResponse(template.render(context, request))
 

@@ -39,13 +39,18 @@ table th {
     <th>Productor/es</th>
   </tr>
 
-  {% for movie in datos.results %}
+  {% for movie in datos %}
     <tr>
-      <td><a href = "/moviedetail/{{movie.id}}">{{movie.title}}</a></td>
-      <td>{{movie.episode_id}}</td>
-      <td>{{movie.release_date}}</td>
-      <td>{{movie.director}}</td>
-      <td>{{movie.producer}}</td>
+      <td><a href = "/moviedetail/{{movie.id}}">{{movie.node.title}}</a></td>
+      <td>{{movie.node.episodeID}}</td>
+      <td>{{movie.node.releaseDate}}</td>
+      <td>{{movie.node.director}}</td>
+      <td>
+          {% for producer in movie.node.producers %}
+            {{producer}}
+            -
+          {% endfor %}
+      </td>
     </tr>
   {% endfor %}
 </table>
