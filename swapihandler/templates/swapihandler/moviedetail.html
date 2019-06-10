@@ -29,6 +29,7 @@ table#t01 td {
 
 
 {% if movie %}
+  <p>{{movie}}</p>
    <h1>WELCOME</h1>
    <form action="/searchview/" method="get">
        <input type="text" name="q">
@@ -46,10 +47,15 @@ table#t01 td {
 
        <tr>
          <td>{{movie.title}}</td>
-         <td>{{movie.episode_id}}</td>
-         <td>{{movie.release_date}}</td>
+         <td>{{movie.episodeID}}</td>
+         <td>{{movie.releaseDate}}</td>
          <td>{{movie.director}}</td>
-         <td>{{movie.producer}}</td>
+         <td>
+             {% for producer in movie.producers %}
+               {{producer}}
+               -
+             {% endfor %}
+         </td>
        </tr>
 
    </table>
@@ -60,7 +66,7 @@ table#t01 td {
      <th></th>
     </tr>
        <tr>
-         <td><font color="#EBD71C" size="8">{{movie.opening_crawl}}</font></td>
+         <td><font color="#EBD71C" size="8">{{movie.openingCrawl}}</font></td>
        </tr>
 
    </table>
@@ -69,26 +75,26 @@ table#t01 td {
 
 
 
-   <table style="float: left">
-   <rt>
-     <th>Personajes</th>
-   </tr>
-   {%for name, id in characters.items%}
-   <tr>
-     <td><a href = "/characterdetail/{{id}}">{{name}}</a></td>
-   </tr>
-   {%endfor%}
+    <table style="float: left">
+    <rt>
+      <th>Personajes</th>
+    </tr>
+    {%for character in movie.characterConnection.edges%}
+    <tr>
+      <td><a href = "/characterdetail/{{character.node.id}}">{{character.node.name}}</a></td>
+    </tr>
+    {%endfor%}
 
-   </table>
+    </table>
 
 
    <table style="float: left">
    <rt>
      <th>Naves</th>
    </tr>
-   {%for nave, id in starships.items%}
+   {%for nave in movie.starshipConnection.edges%}
    <tr>
-     <td><a href = "/starshipdetail/{{id}}">{{nave}}</a></td>
+     <td><a href = "/starshipdetail/{{nave.node.id}}">{{nave.node.name}}</a></td>
    </tr>
    {%endfor%}
 
@@ -99,9 +105,9 @@ table#t01 td {
    <rt>
      <th>Planetas</th>
    </tr>
-   {%for planeta, id in planets.items%}
+   {%for planeta in movie.planetConnection.edges%}
    <tr>
-     <td><a href = "/planetdetail/{{id}}">{{planeta}}</a></td>
+     <td><a href = "/planetdetail/{{planeta.node.id}}">{{planeta.node.name}}</a></td>
    </tr>
    {%endfor%}
 

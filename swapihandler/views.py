@@ -32,6 +32,10 @@ def index(request):
 
     result = run_query(query)
     template = loader.get_template('swapihandler/index.html')
+    id = 0
+    for movie in result['data']['allFilms']['edges']:
+        id += 1
+        movie['node'].update({'id':id})
 
     context = {
         'datos': result['data']['allFilms']['edges'],
@@ -39,35 +43,52 @@ def index(request):
     return HttpResponse(template.render(context, request))
 
 def movie_detail(request, number):
-    r = requests.get('https://swapi.co/api/films/{}'.format(number))
-    datos = r.json()
+    query1 = """
+    {
+      film(filmID:
+    """
+    query2 = ''') {
+        episodeID
+        title
+        director
+        producers
+        releaseDate
+        openingCrawl
+        characterConnection{
+          edges {
+                node {
+          name
+          id
+                }
+          }
+        }
+        starshipConnection{
+          edges{
+            node{
+              name
+              id
+            }
+          }
+        }
+        planetConnection{
+          edges{
+            node{
+              name
+              id
+            }
+          }
+        }
+      }
+    }'''
+    query = '{}{}{}'.format(query1, number, query2)
+    result = run_query(query)
     template = loader.get_template('swapihandler/moviedetail.html')
     characters = {}
     planets = {}
     starships = {}
-    for url in datos['characters']:
-        reqchar = requests.get('{}'.format(url)).json()
-        nombre = reqchar['name']
-        url = url.split('/')
-        id = url[-2]
-        characters.update({nombre:id})
-    for url in datos['planets']:
-        reqplan = requests.get('{}'.format(url)).json()
-        nombre = reqplan['name']
-        url = url.split('/')
-        id = url[-2]
-        planets.update({nombre:id})
-    for url in datos['starships']:
-        reqships = requests.get('{}'.format(url)).json()
-        nombre = reqships['name']
-        url = url.split('/')
-        id = url[-2]
-        starships.update({nombre:id})
     context = {
-        'movie': datos,
-        'characters': characters,
-        'planets': planets,
-        'starships': starships,
+        'movie': result['data']['film'],
+
 
     }
     return HttpResponse(template.render(context, request))
