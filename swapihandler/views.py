@@ -24,6 +24,7 @@ def index(request):
                         director
                         producers
                         releaseDate
+                        id
                       }
                     }
                   }
@@ -32,62 +33,64 @@ def index(request):
 
     result = run_query(query)
     template = loader.get_template('swapihandler/index.html')
-    id = 0
-    for movie in result['data']['allFilms']['edges']:
-        id += 1
-        movie['node'].update({'id':id})
-
     context = {
         'datos': result['data']['allFilms']['edges'],
     }
     return HttpResponse(template.render(context, request))
 
 def movie_detail(request, number):
-    query1 = """
-    {
-      film(filmID:
-    """
-    query2 = ''') {
-        episodeID
-        title
-        director
-        producers
-        releaseDate
-        openingCrawl
-        characterConnection{
-          edges {
-                node {
-          name
-          id
+
+    query = '''
+            {
+              allFilms {
+                edges {
+                  node {
+                    title
+                    id
+                    director
+                    producers
+                    releaseDate
+                    openingCrawl
+                    episodeID
+                    characterConnection{
+                      edges {
+                            node {
+                      name
+                      id
+                            }
+                      }
+                    }
+                    starshipConnection{
+                      edges{
+                        node{
+                          name
+                          id
+                        }
+                      }
+                    }
+                    planetConnection{
+                      edges{
+                        node{
+                          name
+                          id
+                        }
+                      }
+                    }
+                  }
                 }
-          }
-        }
-        starshipConnection{
-          edges{
-            node{
-              name
-              id
+              }
             }
-          }
-        }
-        planetConnection{
-          edges{
-            node{
-              name
-              id
-            }
-          }
-        }
-      }
-    }'''
-    query = '{}{}{}'.format(query1, number, query2)
+            '''
+
     result = run_query(query)
     template = loader.get_template('swapihandler/moviedetail.html')
-    characters = {}
-    planets = {}
-    starships = {}
+
+    for node in result['data']['allFilms']['edges']:
+        if node['node']['id'] == number:
+            nodo = node['node']
+
     context = {
-        'movie': result['data']['film'],
+        'movie': nodo,
 
 
     }
@@ -95,67 +98,122 @@ def movie_detail(request, number):
 
 
 def character_detail(request, number):
-    r = requests.get('https://swapi.co/api/people/{}'.format(number))
-    datos = r.json()
+    query = '''
+            {
+              allPeople {
+                edges {
+                  node {
+                    name
+                    id
+                    birthYear
+                    eyeColor
+                    gender
+                    hairColor
+                    height
+                    mass
+                    skinColor
+
+
+                    starshipConnection {
+                      edges {
+                        node {
+                          id
+                          name
+                        }
+                      }
+                    }
+
+
+                    homeworld {
+                      name
+                      id
+                    }
+                    filmConnection {
+                      edges {
+                        node {
+                          id
+                          title
+                        }
+                      }
+                    }
+
+                  }
+                }
+              }
+            }
+            '''
+    result = run_query(query)
+    nodo = None
+    for node in result['data']['allPeople']['edges']:
+        if node['node']['id'] == number:
+            nodo = node['node']
+
     template = loader.get_template('swapihandler/characterdetail.html')
-    planets = {}
-    movies = {}
-    starships = {}
-    reqplan = requests.get('{}'.format(datos['homeworld'])).json()
-    nombre = reqplan['name']
-    url = datos['homeworld'].split('/')
-    id = url[-2]
-    planets.update({nombre:id})
 
-    for link in datos['films']:
-        reqmov = requests.get('{}'.format(link)).json()
-        nombre = reqmov['title']
-        url = link.split('/')
-        id = url[-2]
-        movies.update({nombre:id})
-
-    for link in datos['starships']:
-        reqstar = requests.get('{}'.format(link)).json()
-        nombre = reqstar['name']
-        url = link.split('/')
-        id = url[-2]
-        starships.update({nombre:id})
 
     context = {
-        'datos': datos,
-        'planets': planets,
-        'movies': movies,
-        'starships': starships,
+        'datos': nodo,
         }
     return HttpResponse(template.render(context, request))
 
 
 
 def planet_detail(request, number):
-    r = requests.get('https://swapi.co/api/planets/{}'.format(number))
-    datos = r.json()
-    template = loader.get_template('swapihandler/planetdetail.html')
-    residents = {}
-    films = {}
-    for link in datos['residents']:
-        reqres = requests.get('{}'.format(link)).json()
-        nombre = reqres['name']
-        url = link.split('/')
-        id = url[-2]
-        residents.update({nombre:id})
+    query = '''
+            {
+              allPlanets {
+                edges {
+                  node {
+                    name
+                    id
+                    diameter
+                    rotationPeriod
+                    orbitalPeriod
+                    gravity
+                    population
+                    climates
+                    terrains
+                    surfaceWater
 
-    for link in datos['films']:
-        reqfilms = requests.get('{}'.format(link)).json()
-        nombre = reqfilms['title']
-        url = link.split('/')
-        id = url[-2]
-        films.update({nombre:id})
+
+
+                    residentConnection {
+                      edges {
+                        node {
+                          id
+                        	name
+                        }
+                      }
+                    }
+
+
+                    filmConnection {
+                      edges {
+                        node {
+                          id
+                          title
+                        }
+                      }
+                    }
+
+                  }
+                }
+              }
+            }
+
+            '''
+
+    result = run_query(query)
+    template = loader.get_template('swapihandler/planetdetail.html')
+
+    nodo = None
+    for node in result['data']['allPlanets']['edges']:
+        if node['node']['id'] == number:
+            nodo = node['node']
 
 
     context = {
-        'datos': datos,
-        'residents': residents,
-        'films': films,
+        'datos': nodo,
         }
     return HttpResponse(template.render(context, request))
 

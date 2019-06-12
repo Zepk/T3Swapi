@@ -45,58 +45,57 @@ table th {
    </tr>
    <tr>
      <td>Pelo</td>
-     <td>{{datos.hair_color}}</td>
+     <td>{{datos.hairColor}}</td>
    </tr>
    <tr>
      <td>Skin</td>
-     <td>{{datos.skin_color}}</td>
+     <td>{{datos.skinColor}}</td>
    </tr>
    <tr>
      <td>Ojos</td>
-     <td>{{datos.eye_color}}</td>
+     <td>{{datos.eyeColor}}</td>
    </tr>
    <tr>
      <td>Nacimiento</td>
-     <td>{{datos.birth_year}}</td>
+     <td>{{datos.birthYear}}</td>
    </tr>
    <tr>
      <td>Genero</td>
      <td>{{datos.gender}}</td>
    </tr>
    <tr>
-     {%for nombre, id in planets.items%}
      <td>Homeworld</td>
-     <td><a href = "/planetdetail/{{id}}">{{nombre}}</td>
-     {%endfor%}
+     <td><a href = "/planetdetail/{{datos.homeworld.id}}">{{datos.homeworld.name}}</td>
    </tr>
 
  </table>
 
 <div>
-{%if movies.items%}
+{%if datos.filmConnection%}
 <table style="float: left">
   <rt>
     <th>Peliculas</th>
   </tr>
 
-  {%for film, id in movies.items%}
+  {%for film in datos.filmConnection.edges%}
   <tr>
-    <td><a href = "/moviedetail/{{id}}">{{film}}</a></td>
+    <td><a href = "/moviedetail/{{film.node.id}}">{{film.node.title}}</a></td>
   </tr>
   {%endfor%}
 
 </table>
 {%endif%}
 
-{%if starships.items%}
+
+{%if datos.starshipConnection%}
 <table style="float: left">
   <rt>
     <th>Naves</th>
   </tr>
 
-  {%for starship, id in starships.items%}
+  {%for starship in datos.starshipConnection.edges%}
   <tr>
-    <td><a href = "/starshipdetail/{{id}}">{{starship}}</a></td>
+    <td><a href = "/starshipdetail/{{starship.node.id}}">{{starship.node.name}}</a></td>
   </tr>
   {%endfor%}
 

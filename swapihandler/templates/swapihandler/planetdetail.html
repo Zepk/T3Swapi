@@ -34,11 +34,11 @@ table th {
    </tr>
    <tr>
      <td>Periodo rotacional</td>
-     <td>{{datos.rotation_period}}</td>
+     <td>{{datos.rotationPeriod}}</td>
    </tr>
    <tr>
      <td>Periodo Orbital</td>
-     <td>{{datos.orbital_period}}</td>
+     <td>{{datos.orbitalPeriod}}</td>
    </tr>
    <tr>
      <td>Diametro</td>
@@ -46,7 +46,12 @@ table th {
    </tr>
    <tr>
      <td>Clima</td>
-     <td>{{datos.climate}}</td>
+       <td>
+         {% for climate in datos.climates %}
+           {{climate}}
+           -
+         {% endfor %}
+       </td>
    </tr>
    <tr>
      <td>Gravedad</td>
@@ -54,11 +59,16 @@ table th {
    </tr>
    <tr>
      <td>Terreno</td>
-     <td>{{datos.terrain}}</td>
+     <td>
+       {% for terrain in datos.terrains %}
+         {{terrain}}
+         -
+       {% endfor %}
+     </td>
    </tr>
    <tr>
      <td>Agua en superficie</td>
-     <td>{{datos.surface_water}}</td>
+     <td>{{datos.surfaceWater}}</td>
    </tr>
    <tr>
      <td>Poblacion</td>
@@ -68,35 +78,35 @@ table th {
 
 
  <div>
-   {%if residents.items%}
+   {%if datos.residentConnection.edges%}
  <table style="float: left">
    <rt>
      <th>Residentes</th>
    </tr>
 
-   {%for name, id in residents.items%}
+   {%for nodo in datos.residentConnection.edges%}
    <tr>
-     <td><a href = "/characterdetail/{{id}}">{{name}}</a></td>
+     <td><a href = "/characterdetail/{{nodo.node.id}}">{{nodo.node.name}}</a></td>
    </tr>
    {%endfor%}
  </table>
+ {%endif%}
 
-
-{%if films%}
+{%if datos.filmConnection.edges%}
  <table style="float: left">
    <rt>
      <th>Peliculas</th>
    </tr>
 
-   {%for name, id in films.items%}
+   {%for name in datos.filmConnection.edges%}
    <tr>
-     <td><a href = "/moviedetail/{{id}}">{{name}}</a></td>
+     <td><a href = "/moviedetail/{{name.node.id}}">{{name.node.title}}</a></td>
    </tr>
    {%endfor%}
  </table>
 {%endif%}
 
- {%endif%}
+
  </div>
 
 
