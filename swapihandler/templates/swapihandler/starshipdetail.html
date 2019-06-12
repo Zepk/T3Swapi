@@ -22,7 +22,7 @@ table th {
 
 
 {% if datos %}
- <h1>WELCOME</h1>
+ <h1><a href = "/">Inicio</a></h1>
  <form action="/searchview/" method="get">
      <input type="text" name="q">
      <input type="submit" value="Buscar">
@@ -39,11 +39,16 @@ table th {
    </tr>
    <tr>
      <td>Fabricante</td>
-     <td>{{datos.manufacturer}}</td>
+     <td>
+       {% for manufacturer in datos.manufacturers %}
+         {{manufacturer}}
+         -
+       {% endfor %}
+     </td>
    </tr>
    <tr>
      <td>Costo (En creditos)</td>
-     <td>{{datos.cost_in_credits}}</td>
+     <td>{{datos.costInCredits}}</td>
    </tr>
    <tr>
      <td>Envergadura</td>
@@ -51,7 +56,7 @@ table th {
    </tr>
    <tr>
      <td>Max Max atmosphering speed</td>
-     <td>{{datos.max_atmosphering_speed}}</td>
+     <td>{{datos.maxAtmospheringSpeed}}</td>
    </tr>
    <tr>
      <td>Tripulacion</td>
@@ -63,7 +68,7 @@ table th {
    </tr>
    <tr>
      <td>Capacidad de carga</td>
-     <td>{{datos.cargo_capacity}}</td>
+     <td>{{datos.cargoCapacity}}</td>
    </tr>
    <tr>
      <td>Consumibles</td>
@@ -71,7 +76,7 @@ table th {
    </tr>
    <tr>
      <td>Hyperdrive Rating</td>
-     <td>{{datos.hyperdrive_rating}}</td>
+     <td>{{datos.hyperdriveRating}}</td>
    </tr>
    <tr>
      <td>MGLT</td>
@@ -79,21 +84,21 @@ table th {
    </tr>
    <tr>
      <td>Clase</td>
-     <td>{{datos.starship_class}}</td>
+     <td>{{datos.starshipClass}}</td>
    </tr>
  </table>
 
 
  <div>
-   {%if pilots.items%}
+   {%if datos.pilotConnection.edges%}
  <table style="float: left">
    <rt>
      <th>Pilotos</th>
    </tr>
 
-   {%for name, id in pilots.items%}
+   {%for name in datos.pilotConnection.edges%}
    <tr>
-     <td><a href = "/characterdetail/{{id}}">{{name}}</a></td>
+     <td><a href = "/characterdetail/{{name.node.id}}">{{name.node.name}}</a></td>
    </tr>
    {%endfor%}
  </table>
@@ -104,9 +109,9 @@ table th {
      <th>Peliculas</th>
    </tr>
 
-   {%for name, id in films.items%}
+   {%for name in datos.filmConnection.edges%}
    <tr>
-     <td><a href = "/moviedetail/{{id}}">{{name}}</a></td>
+     <td><a href = "/moviedetail/{{name.node.id}}">{{name.node.title}}</a></td>
    </tr>
    {%endfor%}
  </table>

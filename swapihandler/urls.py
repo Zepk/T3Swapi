@@ -8,7 +8,7 @@ urlpatterns = [
     path('moviedetail/<str:number>', views.movie_detail, name='moviedetail'),
     path('characterdetail/<str:number>', views.character_detail, name='charaterdetail'),
     path('planetdetail/<str:number>', views.planet_detail, name='planetdetail'),
-    path('starshipdetail/<int:number>', views.starship_detail, name='starshipdetail'),
+    path('starshipdetail/<str:number>', views.starship_detail, name='starshipdetail'),
     url(r'^search-form/$', views.search_form),
     url(r'^searchview/$', views.search),
     ]
